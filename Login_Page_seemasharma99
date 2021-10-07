@@ -1,0 +1,47 @@
+import tkinter as tk
+from tkinter import ttk
+from methods import ALLMethods
+
+# Using my CRUDE methods file from my first PR in this repo this login page can give results
+
+win = tk.Tk()
+win.title("Student login")
+
+s=ALLMethods()
+name = ttk.Label(win, text="ENTER NAME")
+name.grid(row="0", column="0")
+
+name_val = tk.StringVar()
+nametxt = ttk.Entry(win, width="10", textvariable=name_val)
+nametxt.grid(row="0", column="1")
+
+passwd = ttk.Label(win, text="PASSWORD")
+passwd.grid(row="1", column="0")
+
+passwd_val = tk.StringVar()
+passtxt = ttk.Entry(win, width="10", textvariable=passwd_val)
+passtxt.grid(row="1", column="1")
+
+def login():
+    n = name_val.get()
+    p = passwd_val.get()
+
+    s.setName(n)
+    s.setPasswd(p)
+
+    flag = s.showStudentbyRoll()
+
+    if flag ==0:
+        logintxt.set("Invalid")
+    else:
+        logintxt.set("Success")
+
+
+login = ttk.Button(win,text="Login",command=login)
+login.grid(row="3", column="0")
+
+logintxt = tk.StringVar()
+login = ttk.Label(win, text="", textvariable=logintxt)
+login.grid(row="3", column="1")
+
+win.mainloop()
