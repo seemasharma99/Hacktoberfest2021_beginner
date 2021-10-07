@@ -1,0 +1,93 @@
+import mysql.connector
+conn = mysql.connector.connect(host='localhost', user='root', passwd="", database='seemadb')
+cur = conn.cursor()
+
+class ALLMethods:
+     def __init__(self):
+         self.__roll=0
+         self.__name=""
+         self.__address=""
+         self.__contact=""
+         self.__passwd=""
+
+     def setRoll(self,r):
+         self.__roll=r
+     def getRoll(self):
+         return  self.__roll
+     def setName(self,n):
+         self.__name=n
+     def getName(self):
+         return  self.__name
+     def setAddress(self,a):
+         self.__address=a
+     def getAddress(self):
+         return  self.__address
+     def setContact(self,c):
+         self.__contact=c
+     def getContact(self):
+         return  self.__contact
+     def setPasswd(self,p):
+         self.__passwd=p
+     def getPasswd(self):
+         return  self.__passwd
+
+
+     def addstudent(self):
+         sql = "insert into student(ROLL,NAME,ADDRESS,CONTACT) values(%s,%s,%s,%s)"
+         val=(self.__roll,self.__name,self.__address,self.__contact)
+         cur.execute(sql,val)
+         conn.commit()
+     def deletestudent(self):
+         sql = "delete from student where ROLL= '%J'"
+         val = self.__roll
+         cur.execute(sql,val)
+         conn.commit()
+     def updatestudent(self):
+         sql = "update student set NAME=%s,ADDRESS=%s,CONTACT=%s where ROLL =%s"
+         val = (self.__name,self.__address,self.__contact,self.__roll)
+         cur.execute(sql, val)
+         conn.commit()
+     def showAllStudents(self):
+         cur.execute("select * from student")
+         res =cur.fetchall()
+         for i in res:
+             print(i[0], " ", i[1], " ", i[2], " ", i[3])
+     def showStudentbyRoll(self):
+         sql = "select * from student where NAME = %s and password=%s"
+         val = (self.__name, self.__passwd,)
+         cur.execute(sql, val)
+         res = cur.fetchall()
+         flag=0
+         for i in res:
+             flag=1
+             print(i[0], " ", i[1], " ", i[2], " ", i[3])
+             print("Success")
+         if flag == 0:
+             print("no report found")
+
+         return flag
+
+     def exitFun(self):
+         cur.close()
+         print("end of database")
+     def checkstudent(self):
+         sql = "select * from student where ROLL = '%s'"
+         val = (self.__roll,)
+         cur.execute(sql, val)
+         res = cur.fetchall()
+         flag = 0
+         for i in res:
+             flag=1
+             if self.__passwd == i[4]:
+                 print("password matched")
+             else:
+                 print("wrong password")
+         if flag == 0:
+             print("no report found")
+
+     def Gettingname(self):
+        sql = "select * from student where name like 's%'"
+        cur.execute(sql)
+        res = cur.fetchall()
+        for i in res:
+            print(i[0], " ", i[1], " ", i[2], " ", i[3])
